@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speech Recognition</title>
+</head>
+<body>
+    <button onclick="startRecognition()">Start Recording</button>
+    <p id="transcript"></p>
+
+    <script>
+        const transcriptElement = document.getElementById("transcript");
+
+        function startRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+
+            recognition.onstart = () => {
+                transcriptElement.textContent = "Listening...";
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+
+                // Get the first letter 
+                const firstLetter = transcript.charAt(0); 
+
+                transcriptElement.textContent = firstLetter;
+            };
+
+            recognition.onerror = (event) => {
+                transcriptElement.textContent = "Error occurred: " + event.error;
+            }
+
+            recognition.start();
+        }
+    </script>
+</body>
+</html>
